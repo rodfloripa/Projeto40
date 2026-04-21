@@ -9,8 +9,27 @@
 
 <p align="justify">O conjunto de dados apresenta uma estrutura robusta, composta por 20.130 registros e 11 colunas. Durante a exploração inicial, identificamos que aproximadamente 20% das receitas possuem valores ausentes em colunas críticas como <b>calorias, gorduras e sódio</b>. Essa característica exigiu uma etapa rigorosa de limpeza e tratamento de dados para evitar vieses nas predições dos modelos.</p>
 
+<p align="justify"><h3>3. Processamento de Texto com NLP e BERT</h3></p>
 
-<p align="justify"><h3>3. Perfil Nutricional e Complexidade</h3></p>
+<p align="justify">O processamento de texto no script <b>Epicurious.py</b> é o que transforma descrições culinárias brutas em dados estruturados para <b>ciência de dados</b>. Em vez de apenas ler as palavras, o código aplica técnicas de limpeza e modelos de linguagem avançados para que algoritmos de Machine Learning possam "entender" a complexidade das receitas. Abaixo, detalhamos as etapas desse processamento:</p>
+
+<p align="justify"><h3>3.1 Limpeza e Normalização (Regex)</h3></p>
+
+<p align="justify">Antes de qualquer análise, o texto passa por uma filtragem rigorosa para remover ruídos. A função <b>clean_ingredient</b> utiliza expressões regulares para garantir que variações irrelevantes não confundam o modelo. Por exemplo, ela remove observações entre parênteses — como <i>"(picado)"</i> ou <i>"(opcional)"</i> — e exclui números, mantendo apenas a essência textual dos ingredientes em letras minúsculas.</p>
+
+<p align="justify"><h3>3.2 Tokenização com BERT</h3></p>
+
+<p align="justify">A grande inovação no código é o uso do <b>BERT (Bidirectional Encoder Representations from Transformers)</b>. Diferente de uma contagem de palavras comum, o <b>tokenizer</b> do BERT quebra o texto em unidades chamadas <i>tokens</i>, que capturam melhor o contexto semântico. No script, isso é usado para medir a complexidade das instruções e dos ingredientes, permitindo que o modelo identifique padrões sutis na forma como as receitas são escritas.</p>
+
+<p align="center">
+
+</p>
+
+<p align="justify"><h3>4. Engenharia de Atributos e Co-ocorrência</h3></p>
+
+<p align="justify">O processamento termina convertendo texto em números (features). O código identifica <b>ingredientes comuns</b> (aqueles que aparecem em mais de 100 receitas) e calcula a <b>matriz de co-ocorrência</b>. Isso revela quais termos "andam juntos" (como sal e pimenta), permitindo que a importância de cada variável seja calculada nos modelos de regressão e classificação presentes no final do script.</p>
+
+<p align="justify"><h3>5. Perfil Nutricional e Complexidade</h3></p>
 
 <p align="justify">A análise exploratória através de histogramas revelou que a maior parte do <i>dataset</i> concentra-se em um perfil nutricional moderado. Contudo, a presença marcante de <b>outliers</b> (valores extremos) evidencia a existência de receitas com densidade calórica e teores de sódio atípicos, que se distanciam da média do conjunto. Para quantificar a estrutura dessas receitas, utilizamos a engenharia de atributos para extrair métricas de complexidade: o número de ingredientes (<b>n_ingredients</b>) e o número de passos no preparo (<b>n_steps</b>).</p>
 
@@ -18,7 +37,7 @@
 
 </div>
 
-<p align="justify"><h3>4. Importância das Variáveis (Feature Importance)</h3></p>
+<p align="justify"><h3>6. Importância das Variáveis (Feature Importance)</h3></p>
 
 <p align="justify">Utilizando modelos de florestas aleatórias (Random Forest), quantificamos quais fatores "movem o ponteiro" para <b>prever o teor de sódio das receitas</b> com base em suas outras características nutricionais e de preparo. O objetivo do modelo é entender se a complexidade da receita e outros nutrientes conseguem estimar com precisão a quantidade de sal presente no prato. O resultado revelou uma concentração extrema de influência:</p>
 
@@ -27,11 +46,11 @@
 <li><p align="justify"><b>Eficiência do Modelo:</b> As demais variáveis (X1 a X6) apresentaram impacto irrelevante, sugerindo que o modelo pode ser simplificado para focar apenas nos pilares fundamentais, reduzindo ruído e custo computacional.</p></li>
 </ul>
 
-<p align="justify"><h3>5. Modelagem de Série Temporal</h3></p>
+<p align="justify"><h3>7. Modelagem de Série Temporal</h3></p>
 
 <p align="justify">A análise temporal foi aplicada com o objetivo de <b>prever o volume de postagens de receitas ao longo do tempo</b>. O intuito é identificar o comportamento histórico de publicação no portal Epicurious para antecipar a quantidade de novos conteúdos em períodos futuros. O modelo alcançou um <b>MAPE de 4,60%</b>, o que indica uma precisão altíssima no ajuste aos dados históricos de postagem. No entanto, a previsão para os próximos 4 períodos resultou em um valor constante de <b>52.054</b>. Este "platô" sugere que o modelo capturou a média estável da série de publicações, mas requer a inclusão de componentes de sazonalidade mais complexos para prever oscilações dinâmicas de novos cadastros de receitas.</p>
 
-<p align="justify"><h3>6. Conclusão</h3></p>
+<p align="justify"><h3>8. Conclusão</h3></p>
 
 <p align="justify">O projeto conclui que a estrutura técnica de uma receita é um preditor mais forte do que atributos superficiais. A alta performance do erro percentual (MAPE) aliada à clara distinção de importância das variáveis fornece uma base sólida para a criação de sistemas de recomendação nutricional e ferramentas de previsão de demanda gastronômica.</p>
 
