@@ -9,21 +9,61 @@
 
 <p align="justify">O conjunto de dados apresenta uma estrutura robusta, composta por 20.130 registros e 11 colunas. Durante a exploração inicial, identificamos que aproximadamente 20% das receitas possuem valores ausentes em colunas críticas como <b>calorias, gorduras e sódio</b>. Essa característica exigiu uma etapa rigorosa de limpeza e tratamento de dados para evitar vieses nas predições dos modelos.</p>
 
-<p align="justify"><h3>3. Processamento de Texto com NLP e BERT</h3></p>
+<p align="justify"><h3>3. Processamento de Texto</h3></p>
 
-<p align="justify">O processamento de texto no script <b>Epicurious.py</b> é o que transforma descrições culinárias brutas em dados estruturados para <b>ciência de dados</b>. Em vez de apenas ler as palavras, o código aplica técnicas de limpeza e modelos de linguagem avançados para que algoritmos de Machine Learning possam "entender" a complexidade das receitas. Abaixo, detalhamos as etapas desse processamento:</p>
+<p align="justify">O processamento de texto no projeto utiliza uma combinação de <b>limpeza por RegEx</b>, <b>tokenização estatística</b> e <b>análise de co-ocorrência</b> para converter strings complexas de ingredientes e direções em variáveis utilizáveis por modelos de Machine Learning.</p>
 
-<p align="justify"><h3>3.1 Limpeza e Normalização (Regex)</h3></p>
+<p align="justify"><h3>3.1 Limpeza e Normalização com RegEx</h3></p>
 
-<p align="justify">Antes de qualquer análise, o texto passa por uma filtragem rigorosa para remover ruídos. A função <b>clean_ingredient</b> utiliza expressões regulares para garantir que variações irrelevantes não confundam o modelo. Por exemplo, ela remove observações entre parênteses — como <i>"(picado)"</i> ou <i>"(opcional)"</i> — e exclui números, mantendo apenas a essência textual dos ingredientes em letras minúsculas.</p>
+<p align="justify">Este bloco é responsável por remover o "ruído" do texto, como observações entre parênteses e caracteres especiais, garantindo que o modelo foque apenas no nome do ingrediente:</p>
 
-<p align="justify"><h3>3.2 Tokenização com BERT</h3></p>
+```Python
 
-<p align="justify">A grande inovação no código é o uso do <b>BERT (Bidirectional Encoder Representations from Transformers)</b>. Diferente de uma contagem de palavras comum, o <b>tokenizer</b> do BERT quebra o texto em unidades chamadas <i>tokens</i>, que capturam melhor o contexto semântico. No script, isso é usado para medir a complexidade das instruções e dos ingredientes, permitindo que o modelo identifique padrões sutis na forma como as receitas são escritas.</p>
+def clean_ingredient(ingredient_name):
+    ingredient_name = ingredient_name.lower() # Converte para minúsculas
+    ingredient_name = re.sub(r'\s*\([^)]*\)', '', ingredient_name) # Remove parênteses
+    ingredient_name = re.sub(r'[^a-z\s]', '', ingredient_name) # Mantém apenas letras
+    ingredient_name = re.sub(r'\s+', ' ', ingredient_name).strip() # Remove espaços extras
+    return ingredient_name
+``` 
 
-<p align="center">
+<p align="justify"><h3>3.2 Tokenização Contextual (BERT)</h3></p>
 
-</p>
+<p align="justify">O código utiliza o <b>BERT</b> para transformar o texto em tokens, permitindo medir a complexidade textual de uma forma mais profunda do que uma simples contagem de palavras:</p>
+
+```Python
+
+tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+def count_bert_tokens_for_ingredients(ingredients_data):
+    # ... (lógica de tratamento de strings)
+    tokens = tokenizer.tokenize(text) # Quebra o texto em subtokens do BERT
+    return len(tokens)
+``` 
+
+<p align="justify"><h3>3.3 Identificação de Ingredientes Comuns</h3></p>
+
+<p align="justify">Para reduzir o volume de dados irrelevantes (ingredientes raros), o script filtra apenas o que é estatisticamente significativo:</p>
+
+```Python
+
+min_occurrence = 100 
+common_ingredients = {ing for ing, count in ingredient_counts.items() if count >= min_occurrence}
+``` 
+
+<p align="justify"><h3>3.4 Análise de Co-ocorrência</h3></p>
+
+<p align="justify">Este bloco utiliza <code>itertools.combinations</code> para descobrir quais ingredientes aparecem juntos, o que ajuda a entender a estrutura semântica das receitas:</p>
+
+```Python
+
+for ing1, ing2 in combinations(sorted(list(recipe_cleaned_ingredients)), 2):
+    co_occurrence[(ing1, ing2)] += 1
+```
+
+<p align="justify"><h3>3.5 Resumo da Lógica Aplicada</h3></p>
+
+<p align="justify">O fluxo segue uma lógica de <b>Funil de Dados</b>: o texto bruto é limpo (Etapa 1), quantificado em sua complexidade (Etapa 2), filtrado por relevância estatística (Etapa 3) e, finalmente, relacionado entre si para gerar insights de padrões culinários (Etapa 4).</p>
 
 <p align="justify"><h3>4. Engenharia de Atributos e Co-ocorrência</h3></p>
 
