@@ -60,7 +60,9 @@ common_ingredients = {ing for ing, count in ingredient_counts.items() if count >
 for ing1, ing2 in combinations(sorted(list(recipe_cleaned_ingredients)), 2):
     co_occurrence[(ing1, ing2)] += 1
 ```
-
+<p align="center">
+  <img src="https://github.com/rodfloripa/Projeto40/blob/main/fig1.png">
+</p>
 <p align="justify"><h3>3.5 Resumo da Lógica Aplicada</h3></p>
 
 <p align="justify">O fluxo segue uma lógica de <b>Funil de Dados</b>: o texto bruto é limpo (Etapa 1), quantificado em sua complexidade (Etapa 2), filtrado por relevância estatística (Etapa 3) e, finalmente, relacionado entre si para gerar insights de padrões culinários (Etapa 4).</p>
