@@ -61,7 +61,7 @@ for ing1, ing2 in combinations(sorted(list(recipe_cleaned_ingredients)), 2):
     co_occurrence[(ing1, ing2)] += 1
 ```
 <p align="center">
-  <img src="https://github.com/rodfloripa/Projeto40/blob/main/fig0.png">
+  <img src="https://github.com/rodfloripa/Projeto40/blob/main/fig00.png">
 </p>
 <p align="justify"><h3>3.5 Resumo da Lógica Aplicada</h3></p>
 
