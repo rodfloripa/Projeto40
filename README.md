@@ -73,6 +73,14 @@ for ing1, ing2 in combinations(sorted(list(recipe_cleaned_ingredients)), 2):
 
 <p align="justify"><h3>5. Perfil Nutricional e Complexidade</h3></p>
 
+<p align="center">
+  <img src="https://github.com/rodfloripa/Projeto40/blob/main/fig1.png">
+</p>
+
+<p align="center">
+  <img src="https://github.com/rodfloripa/Projeto40/blob/main/fig2.png">
+</p>
+
 <p align="justify">A análise exploratória através de histogramas revelou que a maior parte do <i>dataset</i> concentra-se em um perfil nutricional moderado. Contudo, a presença marcante de <b>outliers</b> (valores extremos) evidencia a existência de receitas com densidade calórica e teores de sódio atípicos, que se distanciam da média do conjunto. Para quantificar a estrutura dessas receitas, utilizamos a engenharia de atributos para extrair métricas de complexidade: o número de ingredientes (<b>n_ingredients</b>) e o número de passos no preparo (<b>n_steps</b>).</p>
 
 <p align="justify">Diferente do esperado, a análise bivariada demonstrou que a relação entre essa complexidade e os valores nutricionais apresenta uma <b>correlação linear muito fraca</b>. Isso indica que um preparo longo ou com muitos itens não implica necessariamente em um prato mais calórico ou salgado. Essa dispersão acentuada revela que a <b>natureza qualitativa</b> dos ingredientes (ex: usar manteiga vs. vegetais) é muito mais determinante para o valor energético final do que a quantidade bruta de passos ou componentes, validando a necessidade de modelos não-lineares para capturar tais nuances.</p>
